@@ -1,0 +1,21 @@
+name: Pull request
+
+on: pull_request
+
+jobs:
+  deploy:
+    name: Deploy preview
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - run: ./scripts/create-npmrc ${{ secrets.NPM_GITHUB_TOKEN }}
+      - uses: bahmutov/npm-install@v1
+
+      - uses: amondnet/vercel-action@v20
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          github-token: ${{ github.token }}
+          vercel-org-id: team_1ufGuAGpA6R9b1EzxNxFVcNk
+          vercel-project-id: QmeyLmZ7W1GyfBPGrduX2oTQowiRiZiYWeUJMKcJRY8eFJ
+          scope: team_1ufGuAGpA6R9b1EzxNxFVcNk

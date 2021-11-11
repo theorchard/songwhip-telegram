@@ -1,4 +1,5 @@
 .DS_Store
-.now
+.npmrc
+.vercel
 
 node_modules

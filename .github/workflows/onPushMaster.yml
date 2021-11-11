@@ -1,0 +1,51 @@
+name: Push master
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    name: Deploy production
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - run: ./scripts/create-npmrc ${{ secrets.NPM_GITHUB_TOKEN }}
+      - uses: bahmutov/npm-install@v1
+
+      - uses: amondnet/vercel-action@v20
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          github-token: ${{ github.token }}
+          vercel-org-id: team_1ufGuAGpA6R9b1EzxNxFVcNk
+          vercel-project-id: QmeyLmZ7W1GyfBPGrduX2oTQowiRiZiYWeUJMKcJRY8eFJ
+          scope: team_1ufGuAGpA6R9b1EzxNxFVcNk
+          # --prod uses production domain (telegram.songwhip.com)
+          vercel-args: '--prod'
+
+      # this workflow is triggered by a 'push' event so the `event` payload doesn't
+      # contain information about the pull-request, this action fetches that data so that
+      # we can dispatch a useful message & url with the 'new-deployment' songwhip-event
+      - uses: actions-ecosystem/action-get-merged-pull-request@v1
+        id: get-merged-pull-request
+        with:
+          github_token: ${{ github.token }}
+
+      # a pull-request will be found when we merge into master from a pull-request (almost always)
+      - name: Dispatch 'new-deployment' event
+        uses: ./.github/actions/songwhip-events
+        if: ${{ steps.get-merged-pull-request.outputs.title != null }}
+        with:
+          event: '{ "type": "new-deployment", "serviceName": "songwhip-telegram", "message": "${{ steps.get-merged-pull-request.outputs.title }}", "url": "https://github.com/theorchard/songwhip-telegram/pull/${{ steps.get-merged-pull-request.outputs.number }}" }'
+          context: '{ "env": "production" }'
+
+      # if we didn't find a merged pr, use the head_commit, this will happen if ever we
+      # push to master instead of merging into master from a pull-request (emergency only?)
+      - name: Dispatch 'new-deployment' event
+        uses: ./.github/actions/songwhip-events
+        if: ${{ steps.get-merged-pull-request.outputs.title == null }}
+        with:
+          event: '{ "type": "new-deployment", "serviceName": "songwhip-telegram", "message": "${{ github.event.head_commit.message }}", "url": "https://github.com/theorchard/songwhip-telegram/commit/${{ github.event.head_commit.id }}" }'
+          context: '{ "env": "production" }'
