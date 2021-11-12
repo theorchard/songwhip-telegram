@@ -1,0 +1,12 @@
+#!/bin/sh
+
+AUTH_TOKEN=$1
+DIR="$(cd "$(dirname "$0")" && pwd)"
+NPMRC=$DIR/../.npmrc
+
+# delete any existing .npmrc
+rm $NPMRC 2> /dev/null
+
+# create the .npmrc so that npm can see theorchard private packages
+echo "@theorchard:registry=https://npm.pkg.github.com/" >> $NPMRC
+echo "//npm.pkg.github.com/:_authToken=${AUTH_TOKEN}" >> $NPMRC

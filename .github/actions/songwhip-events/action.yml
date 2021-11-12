@@ -1,0 +1,14 @@
+name: 'songwhip-events dispatch action'
+description: 'Trigger a songwhip-event'
+
+inputs:
+  event:
+    description: 'Event object'
+    required: true
+  context:
+    description: 'Additional event context'
+    required: false
+
+runs:
+  using: 'node12'
+  main: './index.js'
