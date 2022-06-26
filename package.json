@@ -10,7 +10,7 @@
   "dependencies": {
     "debug": "^3.0.0",
     "micro": "^9.3.4",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^2.6.7",
     "telegraf": "^3.30.1"
   },
   "devDependencies": {
