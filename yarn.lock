@@ -2,9 +2,9 @@
 # yarn lockfile v1
 
 
-"@theorchard/songwhip-events@^2.3.3":
+"@theorchard/songwhip-events@2.3.3":
   version "2.3.3"
-  resolved "https://npm.pkg.github.com/download/@theorchard/songwhip-events/2.3.3/bd7815be94a73fd22b64ea6213a2d56fa1eded68d028268e6fb79883574c72bc#b6b0f5c6eabb85bca319ec40da36ec3f43c42c21"
+  resolved "https://npm.pkg.github.com/download/@theorchard/songwhip-events/2.3.3/b6b0f5c6eabb85bca319ec40da36ec3f43c42c21#b6b0f5c6eabb85bca319ec40da36ec3f43c42c21"
   integrity sha512-iwydoZcVDWYqj1tOuSS+isbp+EhiVi/reqtkeTZ8qLGhU4ollypvtjqQYGt3Og7RWpdz0/ABuLAVlUQsAwcoDA==
   dependencies:
     debug "^4.3.1"
